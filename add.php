@@ -1,34 +1,54 @@
+<!-- File: add.php -->
 <?php include 'db.php'; ?>
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Tambah Data</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Data Sampah</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <h2>Tambah Proyek SDGs</h2>
-    <form method="POST" action="" onsubmit="return validateForm()">
-        <input type="text" name="nama" id="nama" placeholder="Nama Proyek" required><br>
-        <input type="text" name="kategori" id="kategori" placeholder="Kategori" required><br>
-        <textarea name="deskripsi" id="deskripsi" placeholder="Deskripsi" required></textarea><br>
-        <button type="submit">Simpan</button>
+    <h1>Tambah Data Sampah</h1>
+    <form method="POST" action="add.php" onsubmit="return validateForm()">
+        <label>Nama Sampah:</label>
+        <input type="text" name="nama_sampah" id="nama_sampah" required><br>
+
+        <label>Kategori:</label>
+        <select name="kategori" id="kategori" required>
+            <option value="">Pilih Kategori</option>
+            <option value="Organik">Organik</option>
+            <option value="Anorganik">Anorganik</option>
+        </select><br>
+
+        <label>Berat (kg):</label>
+        <input type="number" step="0.01" name="berat_kg" id="berat_kg" required><br>
+
+        <label>Lokasi:</label>
+        <input type="text" name="lokasi" id="lokasi" required><br>
+
+        <button type="submit" name="submit">Simpan</button>
     </form>
-    <a href="index.php">Kembali</a>
+    <a href="list.php">Kembali ke Daftar</a>
 
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nama = $_POST["nama"];
-    $kategori = $_POST["kategori"];
-    $deskripsi = $_POST["deskripsi"];
+    <?php
+    if (isset($_POST['submit'])) {
+        $nama = $_POST['nama_sampah'];
+        $kategori = $_POST['kategori'];
+        $berat = $_POST['berat_kg'];
+        $lokasi = $_POST['lokasi'];
+        $tanggal = date('Y-m-d');
 
-    $sql = "INSERT INTO proyek (nama, kategori, deskripsi) VALUES ('$nama', '$kategori', '$deskripsi')";
-    if ($conn->query($sql) === TRUE) {
-        header("Location: index.php");
-    } else {
-        echo "Error: " . $conn->error;
+        $sql = "INSERT INTO data_sampah (nama_sampah, kategori, berat_kg, lokasi, tanggal_input) 
+                VALUES ('$nama', '$kategori', '$berat', '$lokasi', '$tanggal')";
+
+        if (mysqli_query($conn, $sql)) {
+            echo "<p>Data berhasil ditambahkan!</p>";
+        } else {
+            echo "<p>Terjadi kesalahan: " . mysqli_error($conn) . "</p>";
+        }
     }
-}
-?>
-<script src="js/script.js"></script>
+    ?>
 </body>
 </html>

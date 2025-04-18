@@ -1,11 +1,12 @@
+<!-- File: db.php -->
 <?php
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "sdgs_db";
+$db = "sampah_db";
 
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+$conn = mysqli_connect($host, $user, $pass, $db);
+if (!$conn) {
+    die("Koneksi gagal: " . mysqli_connect_error());
 }
 ?>

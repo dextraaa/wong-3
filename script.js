@@ -1,29 +1,33 @@
+<!-- File: script.js -->
 function validateForm() {
-    const nama = document.getElementById('nama').value;
+    const nama = document.getElementById('nama_sampah').value.trim();
     const kategori = document.getElementById('kategori').value;
-    if (nama.trim() === '' || kategori.trim() === '') {
-        alert("Nama dan kategori harus diisi!");
+    const berat = document.getElementById('berat_kg').value;
+    const lokasi = document.getElementById('lokasi').value.trim();
+
+    if (!nama || !kategori || !berat || !lokasi) {
+        alert('Semua field wajib diisi!');
         return false;
     }
     return true;
 }
 
 function confirmDelete(id) {
-    if (confirm("Yakin ingin menghapus data ini?")) {
-        window.location = "delete.php?id=" + id;
+    if (confirm('Yakin ingin menghapus data ini?')) {
+        window.location.href = 'delete.php?id=' + id;
     }
 }
 
-function filterTable() {
-    const input = document.getElementById("searchInput").value.toUpperCase();
-    const table = document.getElementById("dataTable");
-    const tr = table.getElementsByTagName("tr");
+document.getElementById('filterKategori')?.addEventListener('change', function () {
+    const kategori = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#dataTable tr');
 
-    for (let i = 1; i < tr.length; i++) {
-        const td = tr[i].getElementsByTagName("td")[1]; // kolom kategori
-        if (td) {
-            const txt = td.textContent || td.innerText;
-            tr[i].style.display = txt.toUpperCase().indexOf(input) > -1 ? "" : "none";
+    rows.forEach(row => {
+        const rowKategori = row.getAttribute('data-kategori').toLowerCase();
+        if (!kategori || rowKategori === kategori) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
         }
-    }
-}
+    });
+});
